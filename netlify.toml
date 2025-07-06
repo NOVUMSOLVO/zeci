@@ -1,0 +1,42 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/api/paypal/create-order"
+  to = "/.netlify/functions/paypal-create-order"
+  status = 200
+
+[[redirects]]
+  from = "/api/paypal/capture-order/*"
+  to = "/.netlify/functions/paypal-capture-order"
+  status = 200
+
+[[redirects]]
+  from = "/api/paynow/initiate"
+  to = "/.netlify/functions/paynow-initiate"
+  status = 200
+
+[[redirects]]
+  from = "/api/paynow/status"
+  to = "/.netlify/functions/paynow-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/whatsapp/send-message"
+  to = "/.netlify/functions/whatsapp-send-message"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"
+
+[dev]
+  command = "npm run dev"

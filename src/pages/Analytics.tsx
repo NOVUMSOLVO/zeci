@@ -13,8 +13,10 @@ import {
   PieChart,
   Activity
 } from 'lucide-react';
+import { usePersona } from '../PersonaContext';
 
 const Analytics = () => {
+  const { persona } = usePersona();
   const [selectedPeriod, setSelectedPeriod] = useState('30');
   const [selectedMetric, setSelectedMetric] = useState('revenue');
   const [showExportModal, setShowExportModal] = useState(false);

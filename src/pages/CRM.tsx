@@ -15,8 +15,10 @@ import {
   Edit,
   MoreVertical
 } from 'lucide-react';
+import { usePersona } from '../PersonaContext';
 
 const CRM = () => {
+  const { persona } = usePersona();
   const [activeTab, setActiveTab] = useState('customers');
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);

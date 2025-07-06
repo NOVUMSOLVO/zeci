@@ -14,8 +14,10 @@ import {
   Calendar,
   X
 } from 'lucide-react';
+import { usePersona } from '../PersonaContext';
 
 const Orders = () => {
+  const { persona } = usePersona();
   const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');

@@ -13,8 +13,10 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react';
+import { usePersona } from '../PersonaContext';
 
 const Settings = () => {
+  const { persona } = usePersona();
   const [activeTab, setActiveTab] = useState('business');
   const [showApiKey, setShowApiKey] = useState(false);
   const [saveStatus, setSaveStatus] = useState('');

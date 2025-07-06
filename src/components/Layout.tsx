@@ -13,6 +13,8 @@ import {
   Bell,
   Search
 } from 'lucide-react';
+import { usePersona } from '../PersonaContext';
+import { personas } from '../personas';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,6 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { persona, setPersona } = usePersona();
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: Home },
@@ -137,7 +140,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </div>
             </div>
 
+            {/* Add persona selector to top nav */}
             <div className="flex items-center space-x-4">
+              <select
+                className="border rounded px-2 py-1 text-sm"
+                value={persona.id}
+                onChange={e => setPersona(personas.find(p => p.id === e.target.value) || personas[0])}
+                title="Switch Persona"
+              >
+                {personas.map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
               <button 
                 className="relative p-2 text-gray-500 hover:text-gray-700 transition-colors"
                 onClick={() => {

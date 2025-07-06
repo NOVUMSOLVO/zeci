@@ -12,8 +12,10 @@ import {
   Star,
   Image as ImageIcon
 } from 'lucide-react';
+import { usePersona } from '../PersonaContext';
 
 const Store = () => {
+  const { persona } = usePersona();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');

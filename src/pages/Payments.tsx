@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   CreditCard,
   DollarSign,
@@ -13,10 +13,37 @@ import {
   Banknote,
   RefreshCw
 } from 'lucide-react';
+import CheckoutComponent from '../components/payments/CheckoutComponent';
+import { PaymentOrder } from '../services/paymentService';
+import { usePersona } from '../PersonaContext';
 
 const Payments = () => {
+  const { persona } = usePersona();
   const [selectedPeriod, setSelectedPeriod] = useState('30');
   const [showExportModal, setShowExportModal] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
+
+  // Demo order data
+  const demoOrder: PaymentOrder = {
+    id: `ORDER-${Date.now()}`,
+    amount: 125.50,
+    currency: 'USD',
+    description: 'Sample E-commerce Order',
+    customerEmail: persona.email,
+    customerPhone: persona.phone,
+    items: [
+      {
+        name: 'Premium T-Shirt',
+        quantity: 2,
+        price: 25.00,
+      },
+      {
+        name: 'Designer Jeans',
+        quantity: 1,
+        price: 75.50,
+      },
+    ],
+  };
 
   const paymentStats = [
     {
@@ -27,27 +54,49 @@ const Payments = () => {
       icon: DollarSign,
     },
     {
+      name: 'PayPal Payments',
+      value: '$4,234.75',
+      change: '+22.1%',
+      changeType: 'positive',
+      icon: CreditCard,
+    },
+    {
       name: 'EcoCash Payments',
-      value: '$8,456.25',
+      value: '$6,456.25',
       change: '+18.2%',
       changeType: 'positive',
       icon: Smartphone,
     },
     {
       name: 'OneMoney Payments',
-      value: '$3,234.75',
+      value: '$2,156.50',
       change: '+8.7%',
       changeType: 'positive',
       icon: Smartphone,
     },
-    {
-      name: 'Cash on Delivery',
-      value: '$1,156.50',
-      change: '-5.2%',
-      changeType: 'negative',
-      icon: Banknote,
-    },
   ];
+
+  const handlePaymentSuccess = (details: any, method: string) => {
+    console.log('Payment successful:', { details, method });
+    setShowCheckout(false);
+    // Here you would typically update your backend, show success message, etc.
+  };
+
+  const handlePaymentError = (error: any) => {
+    console.error('Payment failed:', error);
+    // Handle payment error
+  };
+
+  if (showCheckout) {
+    return (
+      <CheckoutComponent
+        order={demoOrder}
+        onPaymentSuccess={handlePaymentSuccess}
+        onPaymentError={handlePaymentError}
+        onBack={() => setShowCheckout(false)}
+      />
+    );
+  }
 
   const transactions = [
     {
@@ -158,6 +207,13 @@ const Payments = () => {
             <p className="mt-2 text-gray-600">Track payments and manage financial transactions</p>
           </div>
           <div className="mt-4 sm:mt-0 flex items-center space-x-3">
+            <button
+              onClick={() => setShowCheckout(true)}
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <CreditCard className="w-5 h-5 mr-2" />
+              Demo Checkout
+            </button>
             <select
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value)}
@@ -168,15 +224,12 @@ const Payments = () => {
               <option value="90">Last 3 months</option>
               <option value="365">Last year</option>
             </select>
-            <button className="inline-flex items-center px-4 py-2 bg-zim-green-600 text-white rounded-lg hover:bg-zim-green-700 transition-colors">
+            <button 
+              className="inline-flex items-center px-4 py-2 bg-zim-green-600 text-white rounded-lg hover:bg-zim-green-700 transition-colors"
+              onClick={() => setShowExportModal(true)}
+            >
               <Download className="w-5 h-5 mr-2" />
-              <button 
-                className="inline-flex items-center px-4 py-2 bg-zim-green-600 text-white rounded-lg hover:bg-zim-green-700 transition-colors"
-                onClick={() => setShowExportModal(true)}
-              >
-                <Download className="w-5 h-5 mr-2" />
-                Export
-              </button>
+              Export
             </button>
           </div>
         </div>
